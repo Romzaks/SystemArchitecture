@@ -20,6 +20,7 @@ def encoder():  # зашифровывает сообщение из файла 
         if c == ' ':  # если пробельный символ - пропускаем
             c = filein.read(1)
             continue
+        c = c.lower()  # переводим символ в нижний регистр
         this_ord = ord(c) + key
         if this_ord > last_ord:
             this_ord -= (last_ord - first_ord) + 1
@@ -31,7 +32,29 @@ def encoder():  # зашифровывает сообщение из файла 
 
 
 def abonent_b():
-    pass
+    try:
+        decoder()
+    except Exception as err:
+        print('Exception in abonentB:' + err)
+    os.remove('outputfile.txt')
+    os.rename('tmp.txt', 'outputfile.txt')
+
+def decoder():
+    filein = open('outputfile.txt', 'r')
+    fileout = open('tmp.txt', 'w')
+
+    first_ord, last_ord = ord('a'), ord('z')
+    c = filein.read(1)
+    while c != '':
+        this_ord = ord(c) - key
+        if this_ord < first_ord:
+            this_ord = last_ord + this_ord - first_ord + 1
+        fileout.write(chr(this_ord))
+        c = filein.read(1)
+
+    filein.close()
+    fileout.close()
 
 
 abonent_a()
+abonent_b()
