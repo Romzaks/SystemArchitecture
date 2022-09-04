@@ -14,16 +14,24 @@ def encoder():  # зашифровывает сообщение из файла 
     filein = open('inputfile.txt', 'r')
     fileout = open('outputfile.txt', 'w')
 
+    first_ord, last_ord = ord('a'), ord('z')
     c = filein.read(1)
     while c != '':
         if c == ' ':  # если пробельный символ - пропускаем
             c = filein.read(1)
             continue
-        fileout.write(chr(ord(c) + key))  # записываем в файл сдвинутый на key символ
-        c = filein.read(1)
+        this_ord = ord(c) + key
+        if this_ord > last_ord:
+            this_ord -= (last_ord - first_ord) + 1
+        fileout.write(chr(this_ord))  # записываем в файл сдвинутый на key символ
+        c = filein.read(1)  # считываем новый символ
 
     filein.close()
     fileout.close()
 
 
+def abonent_b():
+    pass
 
+
+abonent_a()
