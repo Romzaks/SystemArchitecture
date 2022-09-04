@@ -34,6 +34,25 @@ def nod(a: int, b: int):
     return b
 
 
+def extended_euclidean(a: int, b: int):
+    if a < b:
+        a, b = b, a
+    r0, r1 = a, b
+    s0, s1 = 1, 0
+    t0, t1 = 0, 1
+    r = r0 % r1
+    while r != 0:
+        r = r0 % r1
+        q = (r0 - r) // r1
+        r0 = r1
+        r1 = r
+        s = s0 - q * s1
+        t = t0 - q * t1
+        s0, s1 = s1, s
+        t0, t1 = t1, t
+    return r0, s0, t0
+
+
 def abonent_a():
     primes = prime_numbers()
     p, q = primes[random.randint(0, len(primes) - 1)], primes[random.randint(0, len(primes) - 1)]
@@ -43,10 +62,14 @@ def abonent_a():
     n = p * q
     f = eiler_function(p, q)
     e = random.randint(1, f - 1)
-    while (f % e) == 0:
-        e = random.randint(1, f - 1)
-    print(p, q)
-    print(e, f)
+    while nod(f, e) != 1:
+        e = random.randint(2, f - 1)
+    nod1, h, d = extended_euclidean(f, e)
+    print(f'{nod1} =  {f} * {h} + {e} * {d}')
+    print(nod(f, e))
+    #TODO 
+
+abonent_a()
 
 
 
