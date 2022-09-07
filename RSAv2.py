@@ -1,9 +1,7 @@
 # реализация алгоритма RSA
 
-import math
-import os
 import random
-
+import os
 
 def eiler_function(p: int, q: int):
     return (p - 1) * (q - 1)
@@ -49,7 +47,7 @@ def abonent_a():
     f = eiler_function(p, q)
     e = 3
 
-    #nod1, h, d = extended_euclidean(f, e)
+    # nod1, h, d = extended_euclidean(f, e)
     d = (2 * f + 1) // e
     print(f'p = {p}, q = {q}, n = {n}, f = {f}, e = {e}, d = {d}')
     return e, n, d
@@ -66,7 +64,6 @@ def decoder(d, n, c):
 
 def e_function(m: int, e: int, n: int):
     c = (m ** e) % n
-    #print('C ==', c)
     return c
 
 
@@ -109,7 +106,7 @@ def coder_symbols(s: str):
 
 def encoder_symbols(s: str):
     """Преобразования чисел в буквы, по заданному правилу"""
-    #11 - a, 12 - b, ..
+    # 11 - a, 12 - b, ..
     diff = ord('a') - 11
     s_chr = ''
     for i in range(0, len(s), 2):
@@ -117,37 +114,46 @@ def encoder_symbols(s: str):
         s_chr += chr(m_chr)
     return s_chr
 
+
 def clear_file(filename):
     """Очистка файла filename"""
     tmp = open(filename, 'w')
     tmp.close()
 
 
-def main():
-    clear_file('outputfile.txt')
-    e, n, d = abonent_a()
-    #logn = int(math.log2(n))  #взять 99
-    logn = 99
-    fileinput = open('inputfile.txt', 'r')
+def encode_symbol_in_file(filename):
+    """кодирование символов в файле цифрами"""
+    fileinput = open(filename, 'r')
     s = fileinput.read()
     s = coder_symbols(s)
     file = open('tmp.txt', 'w')
     file.write(s)
     file.close()
     fileinput.close()
-    os.remove('inputfile.txt')
-    os.rename('tmp.txt', 'inputfile.txt')
-    fileinput = open('inputfile.txt', 'r')
+
+
+def decode_manager(e, n, d):
+    """раскодирование чисел в цифр в файле"""
+    # logn = int(math.log2(n))  #взять 99
+    logn = 99
+    fileinput = open('tmp.txt', 'r')
     s = fileinput.read()
     s = s.strip('\n')
-    print(logn)
     while s != '':
-        print(s)
+        # print(s)
         s, c = get_num_from_string(s, logn)
-        print(c)
+        # print(c)
         c = e_function(c, e, n)
         decoder(d, n, c)
     fileinput.close()
+
+
+def main():
+    clear_file('outputfile.txt')
+    e, n, d = abonent_a()
+    encode_symbol_in_file('inputfile.txt')
+    decode_manager(e, n, d)
+    os.remove('tmp.txt')
 
 
 main()
