@@ -42,6 +42,7 @@ def extended_euclidean(a: int, b: int):
 
 
 def abonent_a():
+    """Выбираем простые числа p, q, находим n, d, выбираем e"""
     p, q = 3557, 2579
 
     n = p * q
@@ -55,6 +56,7 @@ def abonent_a():
 
 
 def decoder(d, n, c):
+    """Преобразует зашифрованное сообщение c в исходное m"""
     m = int((c ** d) % n)
     fileout = open('outputfile.txt', 'a')
     m = encoder_symbols(str(m))
@@ -64,11 +66,12 @@ def decoder(d, n, c):
 
 def e_function(m: int, e: int, n: int):
     c = (m ** e) % n
-    print('C ==', c)
+    #print('C ==', c)
     return c
 
 
-def get_num_from_string(s, a):
+def get_num_from_string(s: str, a: int):
+    """Получение числа, меньшего чем a из строки s"""
     sum = 0
     i = 0
     for i in range(len(s)):
@@ -91,6 +94,7 @@ def get_num_from_string(s, a):
 
 
 def coder_symbols(s: str):
+    """Кодировка символов числами, начиная с 11"""
     # a - 11, b - 12, ..
     s = s.lower()
     diff = ord('a') - 11
@@ -104,6 +108,7 @@ def coder_symbols(s: str):
 
 
 def encoder_symbols(s: str):
+    """Преобразования чисел в буквы, по заданному правилу"""
     #11 - a, 12 - b, ..
     diff = ord('a') - 11
     s_chr = ''
@@ -112,10 +117,14 @@ def encoder_symbols(s: str):
         s_chr += chr(m_chr)
     return s_chr
 
+def clear_file(filename):
+    """Очистка файла filename"""
+    tmp = open(filename, 'w')
+    tmp.close()
+
 
 def main():
-    fileout = open('outputfile.txt', 'w')
-    fileout.close()
+    clear_file('outputfile.txt')
     e, n, d = abonent_a()
     #logn = int(math.log2(n))  #взять 99
     logn = 99
